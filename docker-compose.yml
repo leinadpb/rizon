@@ -1,0 +1,29 @@
+version: "3.8" # Docker Engine 19.03.0+
+
+services:
+  db:
+    build: "./db"
+    restart: always
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=local_db_password
+      - POSTGRES_DB=rizon
+      - POSTGRES_PORT=5434
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    expose:
+      - "5434" # Publishes 5434 to other containers but NOT to host machine
+    ports:
+      - "5434:5434"
+    command: -p 5434
+    volumes:
+      - ./db/postgres-data:/var/lib/postgresql/data # Persist data even if container shuts down
+
+  pgadmin:
+    container_name: db-browser
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@rizon.com
+      PGADMIN_DEFAULT_PASSWORD: rizon
+    ports:
+      - "5050:80"
