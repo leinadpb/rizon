@@ -1,5 +1,6 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 import { BaseEntity } from "./base.entity";
+import ReservationEntity from "./reservation.entity";
 
 export type UserDto = {
     id?: string;
@@ -17,6 +18,9 @@ export default class UserEntity extends BaseEntity {
 
     @Column({ name: 'password_hash', nullable: true })
     passwordHash?: string;
+
+    @OneToMany(() => ReservationEntity, (reservation) => reservation.user)
+    reservations: ReservationEntity[];
 
     getDto = (): UserDto => {
         return {
