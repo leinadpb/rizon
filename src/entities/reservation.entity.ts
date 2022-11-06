@@ -7,9 +7,17 @@ import UserEntity from "./user.entity";
 export type ReservationDto = {
     hotelId?: string;
     roomId?: string;
+    roomCode?: string;
     userId?: string;
     from: Date;
     to: Date;
+    id: string;
+    status: ReservationStatus;
+}
+
+export enum ReservationStatus {
+    ACTIVE = 'ACTIVE',
+    CANCELLED = 'CANCELLED'
 }
 
 @Entity('tblreservation')
@@ -29,13 +37,19 @@ export default class ReservationEntity extends BaseEntity {
     @ManyToOne(() => UserEntity, (user) => user.reservations, { onDelete: 'CASCADE' })
     user: UserEntity;
 
+    @Column({ type: 'enum', enum: ReservationStatus, default: ReservationStatus.ACTIVE })
+    status: ReservationStatus;
+
     getDto(): ReservationDto {
         return {
             from: this.fromDate,
             to: this.toDate,
             hotelId: this.hotel?.id,
             roomId: this.room?.id,
+            roomCode: this.room?.code,
             userId: this.user?.id,
+            id: this.id,
+            status: this.status,
         }
     }
 }

@@ -17,7 +17,4 @@ export class ReserverHotelRoomPayload {
 
     @IsString()
     roomCode: string;
-
-    @IsString()
-    userId: string;
 }

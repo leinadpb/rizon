@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import HotelService from "./hotel.service";
 import { AvailableRoomsPayload, ReserverHotelRoomPayload } from "./hotel.types";
 
@@ -17,7 +17,7 @@ export default class HotelController {
     }
 
     @Post('/:hotelId/reserve')
-    async reserveRoom(@Param('hotelId') hotelId: string, @Body() payload: ReserverHotelRoomPayload) {
-        return await this.hotelService.reserverHotelRoom(hotelId, payload.userId, payload);
+    async reserveRoom(@Param('hotelId') hotelId: string, @Query('userId') userId: string, @Body() payload: ReserverHotelRoomPayload) {
+        return await this.hotelService.reserverHotelRoom(hotelId, userId, payload);
     }
 }
